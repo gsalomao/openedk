@@ -38,3 +38,21 @@ if (${PROJECT_NAME} STREQUAL ${CMAKE_PROJECT_NAME})
   enable_testing()
   add_subdirectory(test/unit)
 endif ()
+
+#------------------------------ Static Analysis -------------------------------
+find_program(CPPCHECK cppcheck)
+
+if (CPPCHECK AND ${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
+  message(STATUS "Adding cppcheck")
+
+  add_custom_target(cppcheck)
+  add_custom_command(TARGET cppcheck
+    COMMAND ${CPPCHECK} -q
+      --std=c99
+      --enable=all
+      -I${PROJECT_SOURCE_DIR}/include
+      -I${PROJECT_SOURCE_DIR}/src
+    ${PROJECT_SOURCE_DIR}/src/)
+else ()
+  message(WARNING "cppcheck not found! Static check disabled.")
+endif ()

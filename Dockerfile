@@ -8,6 +8,7 @@ LABEL maintainer="Gustavo Salomao <gsalomao.eng@gmail.com>"
 # Install system dependencies
 RUN apt-get update && apt-get install --no-install-recommends -y \
     cmake \
+    cppcheck \
     g++-multilib \
     gcc-multilib \
     git \
