@@ -7,8 +7,10 @@ LABEL maintainer="Gustavo Salomao <gsalomao.eng@gmail.com>"
 
 # Install system dependencies
 RUN apt-get update && apt-get install --no-install-recommends -y \
+    cmake \
     gcc-multilib \
     git \
+    ninja-build \
     python3 \
     python3-pip
 
