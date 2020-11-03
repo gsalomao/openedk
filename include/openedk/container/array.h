@@ -37,4 +37,15 @@ typedef struct {
 bool array_init(array_t* self, void* buffer, uint32_t buffer_size,
                 uint32_t item_size);
 
+/**
+ * @brief Get buffer.
+ *
+ * Get the underlying buffer.
+ *
+ * @param[in]   self    Array instance.
+ *
+ * @return Pointer to the underlying buffer.
+ */
+void* array_get_buffer(const array_t* self);
+
 #endif // ARRAY_H

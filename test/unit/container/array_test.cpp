@@ -10,7 +10,7 @@ extern "C"
 #include "openedk/container/array.h"
 }
 
-SCENARIO("Initialize array")
+SCENARIO("array: initialize")
 {
     const uint32_t buffer_size{8};
     uint32_t buffer[buffer_size] = {0};
@@ -83,6 +83,40 @@ SCENARIO("Initialize array")
             THEN("should return false")
             {
                 REQUIRE(result == false);
+            }
+        }
+    }
+}
+
+SCENARIO("array: get buffer")
+{
+    const uint32_t buffer_size{8};
+    uint32_t buffer[buffer_size] = {0};
+
+    GIVEN("an initialized array")
+    {
+        array_t array = {0};
+        array_init(&array, buffer, sizeof(buffer), sizeof(*buffer));
+
+        WHEN("get buffer")
+        {
+            uint32_t* buf = static_cast<uint32_t*>(array_get_buffer(&array));
+
+            THEN("should return the array buffer")
+            {
+                REQUIRE(buf == buffer);
+            }
+        }
+    }
+    GIVEN("an invalid array")
+    {
+        WHEN("get buffer")
+        {
+            uint32_t* buf = static_cast<uint32_t*>(array_get_buffer(nullptr));
+
+            THEN("should return null pointer")
+            {
+                REQUIRE(buf == nullptr);
             }
         }
     }
