@@ -235,3 +235,142 @@ SCENARIO("array: get element size")
         }
     }
 }
+
+SCENARIO("array: add element")
+{
+    const uint32_t buffer_size{8};
+    uint32_t buffer[buffer_size] = {0};
+    array_t array = {0};
+
+    array_init(&array, buffer, sizeof(buffer), sizeof(*buffer));
+
+    GIVEN("an initialized array")
+    {
+        WHEN("add an element")
+        {
+            uint32_t element = 0xA55AA55A;
+            bool result = array_add(&array, &element);
+
+            THEN("should return true")
+            {
+                REQUIRE(result == true);
+            }
+            THEN("should add the element")
+            {
+                REQUIRE(buffer[0] == element);
+            }
+            THEN("should not touch the next element")
+            {
+                REQUIRE(buffer[1] == 0);
+            }
+            THEN("should increment size once")
+            {
+                REQUIRE(array.size == 1);
+            }
+        }
+        WHEN("add multiple elements")
+        {
+            uint32_t element0 = 0xA55AA55A;
+            array_add(&array, &element0);
+
+            uint32_t element1 = 0xDEADBEEF;
+            bool result = array_add(&array, &element1);
+
+            THEN("should return true")
+            {
+                REQUIRE(result == true);
+            }
+            THEN("should add the elements")
+            {
+                REQUIRE(buffer[0] == element0);
+                REQUIRE(buffer[1] == element1);
+            }
+            THEN("should increment size twice")
+            {
+                REQUIRE(array.size == 2);
+            }
+        }
+        WHEN("add the same element twice")
+        {
+            uint32_t element = 0xA55AA55A;
+
+            array_add(&array, &element);
+            bool result = array_add(&array, &element);
+
+            THEN("should return true")
+            {
+                REQUIRE(result == true);
+            }
+            THEN("should add the elements")
+            {
+                REQUIRE(buffer[0] == element);
+                REQUIRE(buffer[1] == element);
+            }
+            THEN("should increment size twice")
+            {
+                REQUIRE(array.size == 2);
+            }
+        }
+        WHEN("add an invalid element")
+        {
+            bool result = array_add(&array, NULL);
+
+            THEN("should return false")
+            {
+                REQUIRE(result == false);
+            }
+        }
+    }
+    GIVEN("an invalid array")
+    {
+        WHEN("add an element")
+        {
+            uint32_t element = 0xA55AA55A;
+            bool result = array_add(NULL, &element);
+
+            THEN("should return false")
+            {
+                REQUIRE(result == false);
+            }
+        }
+    }
+    GIVEN("an array with invalid buffer")
+    {
+        array.buffer = NULL;
+
+        WHEN("add an element")
+        {
+            uint32_t element = 0xA55AA55A;
+            bool result = array_add(&array, &element);
+
+            THEN("should return false")
+            {
+                REQUIRE(result == false);
+            }
+        }
+    }
+    GIVEN("an array already full")
+    {
+        uint32_t capacity = array.capacity;
+        array.size = array.capacity;
+
+        WHEN("add an element")
+        {
+            uint32_t element = 0xA55AA55A;
+            bool result = array_add(&array, &element);
+
+            THEN("should return false")
+            {
+                REQUIRE(result == false);
+            }
+            THEN("should not change the size")
+            {
+                REQUIRE(array.size == capacity);
+            }
+            THEN("should not change the capacity")
+            {
+                REQUIRE(array.capacity == capacity);
+            }
+        }
+    }
+}

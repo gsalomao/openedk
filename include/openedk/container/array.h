@@ -81,4 +81,19 @@ uint32_t array_get_capacity(const array_t* self);
  */
 uint32_t array_get_elem_size(const array_t* self);
 
+/**
+ * @brief Add element.
+ *
+ * Add element into the array.
+ *
+ * @note A copy of the element is added into the array.
+ *
+ * @param[in/out]   self        Array instance.
+ * @param[in]       element     Element to add.
+ *
+ * @retval true - if element was added.
+ * @retval false - in case of failure.
+ */
+bool array_add(array_t* self, const void* element);
+
 #endif // ARRAY_H
