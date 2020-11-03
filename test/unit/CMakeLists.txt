@@ -1,7 +1,9 @@
+################################################################################
 # Copyright (C) 2020 Gustavo Salomao
 # All rights reserved.
+################################################################################
 
-#----------------------------------- Setup ------------------------------------
+#----------------------------------- Setup -------------------------------------
 project(${PROJECT_NAME} LANGUAGES C CXX)
 
 # C++ for Catch2 (Unit Test Framework)
@@ -23,7 +25,7 @@ if (NOT COVERAGE_FILES STREQUAL "")
   file(REMOVE ${COVERAGE_FILES})
 endif ()
 
-#--------------------------------- Coverage -----------------------------------
+#--------------------------------- Coverage ------------------------------------
 if (ENABLE_COVERAGE)
   message(STATUS "Adding code coverage")
   find_program(GCOVR gcovr)
@@ -44,4 +46,8 @@ if (ENABLE_COVERAGE)
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
 endif ()
 
-#----------------------------------- Tests ------------------------------------
+#----------------------------------- Tests -------------------------------------
+openedk_add_test(NAME array
+                 TIMEOUT 1
+                 SOURCES container/array_test.cpp
+                 LIBRARIES container::array)

@@ -1,7 +1,9 @@
+################################################################################
 # Copyright (C) 2020 Gustavo Salomao
 # All rights reserved.
+################################################################################
 
-#----------------------------------- Setup ------------------------------------
+#----------------------------------- Setup -------------------------------------
 cmake_minimum_required(VERSION 3.13)
 project(openedk LANGUAGES C)
 
@@ -37,16 +39,16 @@ if (ENABLE_COVERAGE AND ${PROJECT_NAME} STREQUAL ${CMAKE_PROJECT_NAME})
   set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE 1)
 endif ()
 
-#---------------------------------- Sources -----------------------------------
+#---------------------------------- Sources ------------------------------------
 add_subdirectory(src)
 
-#----------------------------------- Tests ------------------------------------
+#----------------------------------- Tests -------------------------------------
 if (${PROJECT_NAME} STREQUAL ${CMAKE_PROJECT_NAME})
   enable_testing()
   add_subdirectory(test/unit)
 endif ()
 
-#------------------------------ Static Analysis -------------------------------
+#------------------------------ Static Analysis --------------------------------
 find_program(CPPCHECK cppcheck)
 
 if (CPPCHECK AND ${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
@@ -57,6 +59,8 @@ if (CPPCHECK AND ${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
     COMMAND ${CPPCHECK} -q
       --std=c99
       --enable=all
+      --suppress=unusedFunction
+      --suppress=missingIncludeSystem
       -I${PROJECT_SOURCE_DIR}/include
       -I${PROJECT_SOURCE_DIR}/src
     ${PROJECT_SOURCE_DIR}/src/)

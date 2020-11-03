@@ -1,5 +1,7 @@
+################################################################################
 # Copyright (C) 2020 Gustavo Salomao
 # All rights reserved.
+################################################################################
 
 #[rst
 # openedk_add_module: Add module into the OpenEDK
