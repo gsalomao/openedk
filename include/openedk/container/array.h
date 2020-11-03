@@ -59,4 +59,15 @@ void* array_get_buffer(const array_t* self);
  */
 uint32_t array_get_size(const array_t* self);
 
+/**
+ * @brief Get capacity.
+ *
+ * Get the number of elements that the array has space for.
+ *
+ * @param[in]   self    Array instance.
+ *
+ * @return The number of elements that the array has space for.
+ */
+uint32_t array_get_capacity(const array_t* self);
+
 #endif // ARRAY_H

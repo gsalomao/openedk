@@ -134,12 +134,12 @@ SCENARIO("array: get size")
 
         WHEN("get size")
         {
-            THEN("should return 3 when the array size is 3")
+            THEN("should return 3")
             {
                 array.size = 3;
                 REQUIRE(array_get_size(&array) == 3);
             }
-            THEN("should return 5 when the array size is 5")
+            THEN("should return 5")
             {
                 array.size = 5;
                 REQUIRE(array_get_size(&array) == 5);
@@ -151,6 +151,44 @@ SCENARIO("array: get size")
         WHEN("get size")
         {
             uint32_t size = array_get_size(NULL);
+
+            THEN("should return 0")
+            {
+                REQUIRE(size == 0);
+            }
+        }
+    }
+}
+
+SCENARIO("array: get capacity")
+{
+    const uint32_t buffer_size{8};
+    uint32_t buffer[buffer_size] = {0};
+
+    GIVEN("an initialized array")
+    {
+        array_t array = {0};
+        array_init(&array, buffer, sizeof(buffer), sizeof(*buffer));
+
+        WHEN("get capacity")
+        {
+            THEN("should return 2")
+            {
+                array.capacity = 2;
+                REQUIRE(array_get_capacity(&array) == 2);
+            }
+            THEN("should return 15")
+            {
+                array.capacity = 15;
+                REQUIRE(array_get_capacity(&array) == 15);
+            }
+        }
+    }
+    GIVEN("an invalid array")
+    {
+        WHEN("get capacity")
+        {
+            uint32_t size = array_get_capacity(NULL);
 
             THEN("should return 0")
             {
