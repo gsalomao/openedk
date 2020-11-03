@@ -197,3 +197,41 @@ SCENARIO("array: get capacity")
         }
     }
 }
+
+SCENARIO("array: get element size")
+{
+    const uint32_t buffer_size{8};
+    uint32_t buffer[buffer_size] = {0};
+
+    GIVEN("an initialized array")
+    {
+        array_t array = {0};
+        array_init(&array, buffer, sizeof(buffer), sizeof(*buffer));
+
+        WHEN("get element size")
+        {
+            THEN("should return 6")
+            {
+                array.elem_size = 6;
+                REQUIRE(array_get_elem_size(&array) == 6);
+            }
+            THEN("should return 25")
+            {
+                array.elem_size = 25;
+                REQUIRE(array_get_elem_size(&array) == 25);
+            }
+        }
+    }
+    GIVEN("an invalid array")
+    {
+        WHEN("get element size")
+        {
+            uint32_t size = array_get_elem_size(NULL);
+
+            THEN("should return 0")
+            {
+                REQUIRE(size == 0);
+            }
+        }
+    }
+}

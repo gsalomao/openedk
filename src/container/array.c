@@ -37,3 +37,8 @@ uint32_t array_get_capacity(const array_t* self)
 {
     return (self) ? self->capacity : 0;
 }
+
+uint32_t array_get_elem_size(const array_t* self)
+{
+    return (self) ? self->elem_size : 0;
+}

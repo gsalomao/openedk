@@ -70,4 +70,15 @@ uint32_t array_get_size(const array_t* self);
  */
 uint32_t array_get_capacity(const array_t* self);
 
+/**
+ * @brief Get size of the elements.
+ *
+ * Get the size of the elements in the array.
+ *
+ * @param[in]   self    Array instance.
+ *
+ * @return The size of the elements.
+ */
+uint32_t array_get_elem_size(const array_t* self);
+
 #endif // ARRAY_H
