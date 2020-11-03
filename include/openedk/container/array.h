@@ -48,4 +48,15 @@ bool array_init(array_t* self, void* buffer, uint32_t buffer_size,
  */
 void* array_get_buffer(const array_t* self);
 
+/**
+ * @brief Get size.
+ *
+ * Get the number of elements in the array.
+ *
+ * @param[in]   self    Array instance.
+ *
+ * @return The number of elements in the array.
+ */
+uint32_t array_get_size(const array_t* self);
+
 #endif // ARRAY_H

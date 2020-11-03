@@ -27,3 +27,8 @@ void* array_get_buffer(const array_t* self)
 {
     return (self) ? self->buffer : NULL;
 }
+
+uint32_t array_get_size(const array_t* self)
+{
+    return (self) ? self->size : 0;
+}

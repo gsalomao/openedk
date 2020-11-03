@@ -121,3 +121,41 @@ SCENARIO("array: get buffer")
         }
     }
 }
+
+SCENARIO("array: get size")
+{
+    const uint32_t buffer_size{8};
+    uint32_t buffer[buffer_size] = {0};
+
+    GIVEN("an initialized array")
+    {
+        array_t array = {0};
+        array_init(&array, buffer, sizeof(buffer), sizeof(*buffer));
+
+        WHEN("get size")
+        {
+            THEN("should return 3 when the array size is 3")
+            {
+                array.size = 3;
+                REQUIRE(array_get_size(&array) == 3);
+            }
+            THEN("should return 5 when the array size is 5")
+            {
+                array.size = 5;
+                REQUIRE(array_get_size(&array) == 5);
+            }
+        }
+    }
+    GIVEN("an invalid array")
+    {
+        WHEN("get size")
+        {
+            uint32_t size = array_get_size(NULL);
+
+            THEN("should return 0")
+            {
+                REQUIRE(size == 0);
+            }
+        }
+    }
+}
