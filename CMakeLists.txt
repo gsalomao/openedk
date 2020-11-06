@@ -19,3 +19,11 @@ endif ()
 if (NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
 endif ()
+
+list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+
+if (${PROJECT_NAME} STREQUAL ${CMAKE_PROJECT_NAME})
+  include(cmake/ModuleHelper.cmake)
+endif ()
+
+#---------------------------------- Sources -----------------------------------
