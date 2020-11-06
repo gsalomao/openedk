@@ -26,4 +26,15 @@ if (${PROJECT_NAME} STREQUAL ${CMAKE_PROJECT_NAME})
   include(cmake/ModuleHelper.cmake)
 endif ()
 
+if (${PROJECT_NAME} STREQUAL ${CMAKE_PROJECT_NAME})
+  include(cmake/TestHelper.cmake)
+endif ()
+
 #---------------------------------- Sources -----------------------------------
+add_subdirectory(src)
+
+#----------------------------------- Tests ------------------------------------
+if (${PROJECT_NAME} STREQUAL ${CMAKE_PROJECT_NAME})
+  enable_testing()
+  add_subdirectory(test/unit)
+endif ()
