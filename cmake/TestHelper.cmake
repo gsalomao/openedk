@@ -54,7 +54,8 @@ macro(openedk_add_test)
   target_include_directories(${TEST_TARGET} PRIVATE ${PROJECT_TEST_DIR})
   target_link_libraries(${TEST_TARGET} PRIVATE
                         ${TEST_LIBRARIES}
-                        Catch2::Catch2)
+                        Catch2::Catch2
+                        fff::fff)
 
   if ("${TEST_TIMEOUT}" STREQUAL "")
     set(TEST_TIMEOUT 600)
