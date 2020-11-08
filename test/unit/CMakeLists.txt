@@ -16,4 +16,32 @@ set(PROJECT_TEST_REPORT_DIR ${CMAKE_BINARY_DIR}/test-results)
 find_package(Catch2)
 find_package(fff)
 
+file(GLOB_RECURSE COVERAGE_FILES "${CMAKE_BINARY_DIR}/*.gcda"
+  "${CMAKE_BINARY_DIR}/*.gcdO")
+
+if (NOT COVERAGE_FILES STREQUAL "")
+  file(REMOVE ${COVERAGE_FILES})
+endif ()
+
+#--------------------------------- Coverage -----------------------------------
+if (ENABLE_COVERAGE)
+  message(STATUS "Adding code coverage")
+  find_program(GCOVR gcovr)
+
+  if ("${GCOVR}" STREQUAL "GCOVR-NOTFOUND")
+    message(FATAL_ERROR "gcovr not found!")
+  endif ()
+
+  add_custom_target(coverage)
+  add_custom_command(TARGET coverage
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/coverage
+    COMMAND ${GCOVR} -r ${CMAKE_SOURCE_DIR}
+      -e vendor
+      -e CMakeFiles/
+      -e ${CMAKE_SOURCE_DIR}/test/
+      --html-details coverage/index.html
+      --html-title "OpenEDK Code Coverage Report"
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+endif ()
+
 #----------------------------------- Tests ------------------------------------

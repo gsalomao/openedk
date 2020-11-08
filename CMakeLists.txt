@@ -30,6 +30,13 @@ if (${PROJECT_NAME} STREQUAL ${CMAKE_PROJECT_NAME})
   include(cmake/TestHelper.cmake)
 endif ()
 
+if (ENABLE_COVERAGE AND ${PROJECT_NAME} STREQUAL ${CMAKE_PROJECT_NAME})
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --coverage")
+  set(CMAKE_C_OUTPUT_EXTENSION_REPLACE 1)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage")
+  set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE 1)
+endif ()
+
 #---------------------------------- Sources -----------------------------------
 add_subdirectory(src)
 
