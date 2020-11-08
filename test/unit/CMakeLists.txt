@@ -11,6 +11,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(PROJECT_TEST_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(PROJECT_TEST_RUNNER ${PROJECT_TEST_DIR}/test_runner.cpp)
+set(PROJECT_TEST_REPORT_DIR ${CMAKE_BINARY_DIR}/test-results)
 
 find_package(Catch2)
 find_package(fff)

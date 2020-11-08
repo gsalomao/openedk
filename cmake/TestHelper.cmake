@@ -61,6 +61,13 @@ macro(openedk_add_test)
     set(TEST_TIMEOUT 600)
   endif ()
 
+  if(NOT EXISTS ${PROJECT_TEST_REPORT_DIR})
+    file(MAKE_DIRECTORY ${PROJECT_TEST_REPORT_DIR})
+  endif()
+
   catch_discover_tests(${TEST_TARGET}
-                       PROPERTIES TIMEOUT ${TEST_TIMEOUT})
+                       OUTPUT_PREFIX "${TEST_NAME}_"
+                       PROPERTIES TIMEOUT ${TEST_TIMEOUT}
+                       REPORTER junit
+                       OUTPUT_DIR ${PROJECT_TEST_REPORT_DIR})
 endmacro()
