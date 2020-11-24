@@ -374,3 +374,172 @@ SCENARIO("array: add element")
         }
     }
 }
+
+SCENARIO("array: remove element")
+{
+    const uint32_t buffer_size{8};
+    uint32_t buffer[buffer_size] = {0};
+    array_t array = {0};
+
+    array_init(&array, buffer, sizeof(buffer), sizeof(*buffer));
+
+    GIVEN("an array without element")
+    {
+        WHEN("remove 1 element")
+        {
+            uint32_t element = 0xA55AA55A;
+            bool result = array_remove(&array, &element);
+
+            THEN("should return false")
+            {
+                REQUIRE(result == false);
+            }
+        }
+    }
+    GIVEN("an array with 1 element")
+    {
+        uint32_t capacity = array.capacity;
+        uint32_t element = 0xA55AA55A;
+        array_add(&array, &element);
+
+        WHEN("remove the element")
+        {
+            bool result = array_remove(&array, &element);
+
+            THEN("should return true")
+            {
+                REQUIRE(result == true);
+            }
+            THEN("should decrement size by 1")
+            {
+                REQUIRE(array.size == 0);
+            }
+            THEN("should not change the capacity")
+            {
+                REQUIRE(array.capacity == capacity);
+            }
+        }
+        WHEN("remove an invalid element")
+        {
+            bool result = array_remove(&array, NULL);
+
+            THEN("should return false")
+            {
+                REQUIRE(result == false);
+            }
+        }
+        WHEN("remove an element that is not in the array")
+        {
+            uint32_t element = 0x12345678;
+            bool result = array_remove(&array, &element);
+
+            THEN("should return false")
+            {
+                REQUIRE(result == false);
+            }
+            THEN("should not change the size")
+            {
+                REQUIRE(array.size == 1);
+            }
+        }
+    }
+    GIVEN("an array with multiple elements")
+    {
+        uint32_t element0 = 0xA55AA55A;
+        uint32_t element1 = 0x12345678;
+        uint32_t element2 = 0x87654321;
+
+        array_add(&array, &element0);
+        array_add(&array, &element1);
+        array_add(&array, &element2);
+
+        uint32_t size = array.size;
+
+        WHEN("remove 1 element")
+        {
+            bool result = array_remove(&array, &element2);
+
+            THEN("should return true")
+            {
+                REQUIRE(result == true);
+            }
+            THEN("should decrement size by 1")
+            {
+                REQUIRE(array.size == (size - 1));
+            }
+        }
+        WHEN("remove 2 elements")
+        {
+            array_remove(&array, &element2);
+            bool result = array_remove(&array, &element1);
+
+            THEN("should decrement size by 2")
+            {
+                REQUIRE(array.size == (size - 2));
+            }
+        }
+        WHEN("remove 1 element which is not the last element")
+        {
+            bool result = array_remove(&array, &element0);
+
+            THEN("should shift the remaining elements")
+            {
+                REQUIRE(buffer[0] == element1);
+                REQUIRE(buffer[1] == element2);
+            }
+        }
+    }
+    GIVEN("an array with repeated elements")
+    {
+        uint32_t element1 = 0xA55AA55A;
+        uint32_t element2 = 0x12345678;
+
+        array_add(&array, &element1);
+        array_add(&array, &element1);
+        array_add(&array, &element1);
+        array_add(&array, &element2);
+
+        WHEN("remove the repeated element")
+        {
+            bool result = array_remove(&array, &element1);
+
+            THEN("should return true")
+            {
+                REQUIRE(result == true);
+            }
+            THEN("should remove all instances of the repeated element")
+            {
+                REQUIRE(array.size == 1);
+                REQUIRE(buffer[0] == element2);
+            }
+        }
+    }
+    GIVEN("an invalid array")
+    {
+        WHEN("remove 1 element")
+        {
+            uint32_t element = 0xA55AA55A;
+            bool result = array_remove(NULL, &element);
+
+            THEN("should return false")
+            {
+                REQUIRE(result == false);
+            }
+        }
+    }
+    GIVEN("an array with invalid buffer")
+    {
+        array.buffer = NULL;
+
+        WHEN("remove 1 element")
+        {
+            uint32_t element = 0xA55AA55A;
+            bool result = array_remove(&array, &element);
+
+            THEN("should return false")
+            {
+                REQUIRE(result == false);
+            }
+        }
+    }
+}

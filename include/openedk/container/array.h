@@ -96,4 +96,17 @@ uint32_t array_get_elem_size(const array_t* self);
  */
 bool array_add(array_t* self, const void* element);
 
+/**
+ * @brief Remove element.
+ *
+ * Remove element from the array.
+ *
+ * @param[in/out]   self        Array instance.
+ * @param[in]       element     Element to remove.
+ *
+ * @retval true - if element was removed.
+ * @retval false - in case of failure.
+ */
+bool array_remove(array_t* self, const void* element);
+
 #endif // ARRAY_H
